@@ -235,10 +235,10 @@ ErrorStatusStack stackResize(Stack_t *st, size_t new_size) {
     return STACK_OK;
 }
 
-void stackfPrint(FILE *stream, Stack_t *st) {
+void _stackfPrint(FILE *stream, Stack_t *st, const char *name) {
     assert(stackVerifier(st));
 
-    fprintf(stream, "Stack_t [%p] {\n", st);
+    fprintf(stream, "Stack_t %s [%p] {\n", name + 1, st);
     fprintf(stream, "    size = %zu\n", st->size);
     fprintf(stream, "    capacity = %zu\n", st->capacity);
     fprintf(stream, "    data[] = {\n");
@@ -251,7 +251,7 @@ void stackfPrint(FILE *stream, Stack_t *st) {
     fprintf(stream, "    }\n}\n");
 }
 
-void stackPrint(Stack_t *st) {
+void _stackPrint(Stack_t *st, const char *name) {
     assert(stackVerifier(st));
-    stackfPrint(stdout, st);
+    _stackfPrint(stdout, st, name);
 }

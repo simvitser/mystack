@@ -18,7 +18,8 @@
 #endif
 
 #define MIN(a, b) ((a) > (b) ? (b) : (a))
-
+#define stackPrint(st)           _stackPrint(st, #st)
+#define stackfPrint(stream, st) _stackfPrint(st, #st)
 
 #include <stdlib.h>
 #include <stdbool.h>
@@ -65,8 +66,8 @@ size_t getStackSize(Stack_t *st);
 
 ErrorStatusStack stackResize(Stack_t *st, size_t new_size);
 
-void stackPrint(Stack_t *st);
+void _stackPrint(Stack_t *st, const char *name);
 
-void stackfPrint(FILE *stream, Stack_t *st);
+void _stackfPrint(FILE *stream, Stack_t *st, const char *name);
 
 #endif
