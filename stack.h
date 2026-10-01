@@ -17,28 +17,34 @@
     #define IF_STACK_DEBUG(...)
 #endif
 
-#define MIN(a, b) ((a) > (b) ? (b) : (a))
 #define stackPrint(st)           _stackPrint(st, #st)
 #define stackfPrint(stream, st) _stackfPrint(st, #st)
 
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdint.h>
 
-typedef double StackElement_t;
+typedef double stackElement_t;
 #define STACK_ELEMENT_FORMATER "%lf"
 
+typedef uint64_t canary_t;
+
 typedef struct {
-    StackElement_t *data;
+    canary_t canary1;
+    stackElement_t *data;
+    stackElement_t *buffer;
     size_t size;
     size_t capacity;
+    uint64_t hash;
     IF_STACK_DEBUG(
         const char *file;
         const char *func;
         const char *name;
         int line;
     )
-} Stack_t;
+    canary_t canary2;
+} stack_t;
 
 typedef enum {
     STACK_OK = 0,
@@ -47,27 +53,30 @@ typedef enum {
     STACK_RESIZE_ERROR
 } ErrorStatusStack;
 
-bool stackVerifierNoPrint(Stack_t *st);
+int stackIsFailedNoPrint(stack_t *st);
 
-ErrorStatusStack _stackCtor(Stack_t *st IF_STACK_DEBUG(, const char *file, const char *func, int line, const char *name));
+ErrorStatusStack _stackCtor(stack_t *st IF_STACK_DEBUG(, const char *file, const char *func, int line, const char *name));
 
-ErrorStatusStack _stackCtorN(Stack_t *st IF_STACK_DEBUG(, const char *file, const char *func, int line, const char *name), size_t n, ...);
+ErrorStatusStack _stackCtorN(stack_t *st IF_STACK_DEBUG(, const char *file, const char *func, int line, const char *name), size_t n, ...);
 
-ErrorStatusStack stackPush(Stack_t *st, StackElement_t el);
+ErrorStatusStack stackPush(stack_t *st, stackElement_t el);
 
-StackElement_t      stackPop(Stack_t *st);
-StackElement_t stackPopLoyal(Stack_t *st);
+stackElement_t      stackPop(stack_t *st);
+stackElement_t stackPopLoyal(stack_t *st);
 
-ErrorStatusStack stackPopTo(Stack_t *st, StackElement_t *el);
+ErrorStatusStack stackPopTo(stack_t *st, stackElement_t *el);
 
-void stackDetor(Stack_t *st);
+void stackDetor(stack_t *st);
 
-size_t getStackSize(Stack_t *st);
+size_t getStackSize(stack_t *st);
 
-ErrorStatusStack stackResize(Stack_t *st, size_t new_size);
+ErrorStatusStack stackResize(stack_t *st, size_t new_size);
 
-void _stackPrint(Stack_t *st, const char *name);
+void  stackDump(stack_t *st);
+void _stackDump(stack_t *st, const char *name); //TODO: поебаться немного чтоб не заглушки были
 
-void _stackfPrint(FILE *stream, Stack_t *st, const char *name);
+void _stackPrint(stack_t *st, const char *name);
+
+void _stackfPrint(FILE *stream, stack_t *st, const char *name);
 
 #endif
