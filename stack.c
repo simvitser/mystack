@@ -283,7 +283,7 @@ static void stackDump(stack_t *st) {
     log("}\n");
 }
 #else
-static void stackDump(Stack_t *st) {}
+static void stackDump(stack_t *st) {}
 #endif
 
 size_t getStackSize(stack_t *st) {

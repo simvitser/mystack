@@ -9,46 +9,6 @@ FILE* GLOBAL_LOG_FILE = NULL;
 const size_t MAX_TIME_SIZE = 100;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 void logInit(const char *filename) {
     assert(GLOBAL_LOG_FILE == NULL);
 
@@ -67,7 +27,7 @@ void logInit(const char *filename) {
 }
 
 void logPuts(const char *message) {
-    assert(GLOBAL_LOG_FILE);
+    if (GLOBAL_LOG_FILE == NULL) return;
     assert(message);
 
     log("%s\n", message);
@@ -75,7 +35,7 @@ void logPuts(const char *message) {
 
 void log(const char *message, ...) {
     assert(message);
-    assert(GLOBAL_LOG_FILE);
+    if (GLOBAL_LOG_FILE == NULL) return;
 
     va_list ap = {};
     va_start(ap, message);
@@ -92,16 +52,8 @@ void log(const char *message, ...) {
 }
 
 void logDestroy() {
-    assert(GLOBAL_LOG_FILE);
-
-    fclose(GLOBAL_LOG_FILE);
-    GLOBAL_LOG_FILE = NULL;
+    if (GLOBAL_LOG_FILE) {
+        fclose(GLOBAL_LOG_FILE);
+        GLOBAL_LOG_FILE = NULL;
+    }
 }
-
-
-
-
-
-// [OK]      stack init
-// [INFO]    got it
-// [ERROR]   FUCK
