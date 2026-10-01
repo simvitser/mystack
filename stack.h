@@ -72,9 +72,6 @@ size_t getStackSize(stack_t *st);
 
 ErrorStatusStack stackResize(stack_t *st, size_t new_size);
 
-void  stackDump(stack_t *st);
-void _stackDump(stack_t *st, const char *name); //TODO: поебаться немного чтоб не заглушки были
-
 void _stackPrint(stack_t *st, const char *name);
 
 void _stackfPrint(FILE *stream, stack_t *st, const char *name);

@@ -1,36 +1,28 @@
-[01.10.2026 16:13:33] Start stack program
-[01.10.2026 16:13:33] Init a stack at 0x7bed346f0020
-[01.10.2026 16:13:33] push el: 1.000000 to 0x7bed346f0020
-[01.10.2026 16:13:33] resize a stack 0x7bed346f0020 to size 6
-[01.10.2026 16:13:33] push el: 2.000000 to 0x7bed346f0020
-[01.10.2026 16:13:33] push el: 3.000000 to 0x7bed346f0020
-[01.10.2026 16:13:33] push el: 4.000000 to 0x7bed346f0020
-[01.10.2026 16:13:33] resize a stack 0x7bed346f0020 to size 12
-[01.10.2026 16:13:33] push el: 5.000000 to 0x7bed346f0020
-[01.10.2026 16:13:33] push el: 6.000000 to 0x7bed346f0020
-[01.10.2026 16:13:33] pop el: 6.000000 from stack 0x7bed346f0020
-[01.10.2026 16:13:33] pop el: 5.000000 from stack 0x7bed346f0020
-[01.10.2026 16:13:33] pop el: 4.000000 from stack 0x7bed346f0020
-[01.10.2026 16:13:33] pop el: 3.000000 from stack 0x7bed346f0020
-[01.10.2026 16:13:33] pop el: 2.000000 from stack 0x7bed346f0020
-[01.10.2026 16:13:33] pop el: 1.000000 from stack 0x7bed346f0020
-[01.10.2026 16:13:33] resize a stack 0x7bed346f0020 to size 6
-[01.10.2026 16:13:33] [ERROR] get invalid stack 0x7bed346f0020, err_number 7
-[01.10.2026 16:13:33] Dump stack made in file main.c by function int main() in line 24:
-[01.10.2026 16:13:33] Stack_t st [0x7bed346f0020] {
-[01.10.2026 16:13:33]     size     = 3
-[01.10.2026 16:13:33]     capacity = 6
-[01.10.2026 16:13:33]     canary1  = ded32ded
-[01.10.2026 16:13:33]     canary2  = babacada
-[01.10.2026 16:13:33]     hash     = 10155398034973132570
-[01.10.2026 16:13:33]     canary3  = 3e7
-[01.10.2026 16:13:33]     canary4  = c0cedded
-[01.10.2026 16:13:33]     data[] = {
-[01.10.2026 16:13:33]          *[ 0] = 0.000000
-[01.10.2026 16:13:33]          *[ 1] = 0.000000
-[01.10.2026 16:13:33]          *[ 2] = 13.000000
-[01.10.2026 16:13:33]           [ 3] = 1.000000
-[01.10.2026 16:13:33]           [ 4] = 2.000000
-[01.10.2026 16:13:33]           [ 5] = 3.000000
-[01.10.2026 16:13:33]     }
-[01.10.2026 16:13:33] }
+[01.10.2026 16:46:28] Start stack program
+[01.10.2026 16:46:28] Init a stack at 0x7babca4f0020
+[01.10.2026 16:46:28] push el: 1.000000 to 0x7babca4f0020
+[01.10.2026 16:46:28] resize a stack 0x7babca4f0020 to size 6
+[01.10.2026 16:46:28] push el: 2.000000 to 0x7babca4f0020
+[01.10.2026 16:46:28] push el: 3.000000 to 0x7babca4f0020
+[01.10.2026 16:46:28] push el: 4.000000 to 0x7babca4f0020
+[01.10.2026 16:46:28] resize a stack 0x7babca4f0020 to size 12
+[01.10.2026 16:46:28] push el: 5.000000 to 0x7babca4f0020
+[01.10.2026 16:46:28] push el: 6.000000 to 0x7babca4f0020
+[01.10.2026 16:46:28] pop el: 6.000000 from stack 0x7babca4f0020
+[01.10.2026 16:46:28] pop el: 5.000000 from stack 0x7babca4f0020
+[01.10.2026 16:46:28] pop el: 4.000000 from stack 0x7babca4f0020
+[01.10.2026 16:46:28] pop el: 3.000000 from stack 0x7babca4f0020
+[01.10.2026 16:46:28] pop el: 2.000000 from stack 0x7babca4f0020
+[01.10.2026 16:46:28] pop el: 1.000000 from stack 0x7babca4f0020
+[01.10.2026 16:46:28] resize a stack 0x7babca4f0020 to size 6
+[01.10.2026 16:46:28] portim
+[01.10.2026 16:46:28] pop el: 13.000000 from stack 0x7babca4f0020
+[01.10.2026 16:46:28] proshlo
+[01.10.2026 16:46:28] pop el: 12.000000 from stack 0x7babca4f0020
+[01.10.2026 16:46:28] resize a stack 0x7babca4f0020 to size 3
+[01.10.2026 16:46:28] pop el: 11.000000 from stack 0x7babca4f0020
+[01.10.2026 16:46:28] pop loyal 0 from stack 0x7babca4f0020
+[01.10.2026 16:46:28] pop loyal 0 from stack 0x7babca4f0020
+[01.10.2026 16:46:28] pop loyal 0 from stack 0x7babca4f0020
+[01.10.2026 16:46:28] pop loyal 0 from stack 0x7babca4f0020
+[01.10.2026 16:46:28] destroy stack 0x7babca4f0020

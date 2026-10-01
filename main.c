@@ -15,6 +15,15 @@
 //     }
 // }
 
+void rewrite_string_reverse(char *s_end) {
+    int max_len = 7;
+    while (*s_end != '\n' && max_len) {
+        *s_end = 'w';
+        s_end--;
+        max_len--;
+    }
+}
+
 int main() {
     logInit("log.txt");
     
@@ -39,16 +48,21 @@ int main() {
     }
     printf("\n");
 
-    for (int i = 0; i < 3; i++) {
-        ((uint64_t*)st.data)[i - 1] = 999;
-    }
+    // for (int i = 0; i < 3; i++) {
+    //     ((uint64_t*)st.data)[i - 1] = 999;
+    // }
+   
+    logPuts("portim");
+    rewrite_string_reverse((char*)st.data);
 
     // st.size = st.capacity + 2;
     // stackPrint(&st);
     // sort2(&(st.size));
     // stackPrint(&st);
     // st.canary1 = 1;
-    stackPush(&st, 1);
+    // stackPush(&st, 1);
+    stackPop(&st);
+    logPuts("proshlo");
 
     for (int i = 0; i < 6; i++) {
         printf(STACK_ELEMENT_FORMATER " ", stackPopLoyal(&st));

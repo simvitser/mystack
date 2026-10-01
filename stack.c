@@ -21,6 +21,8 @@ static const canary_t CANARY4 = 0xC0CEDDED;
 
 static bool stackVerifier(stack_t *st);
 
+static void stackDump(stack_t *st);
+
 static void recountHash(stack_t *st);
 
 ErrorStatusStack _stackCtor(stack_t *st IF_STACK_DEBUG(, const char *file, const char *func, int line, const char *name)) {
@@ -234,7 +236,6 @@ int stackIsFailedNoPrint(stack_t *st) {
     
     if (((canary_t*)st->buffer)[0] != CANARY3)                                return 7;
     if (((canary_t*)st->buffer)[data_size / sizeof(canary_t) + 1] != CANARY4) return 8;
-
     
     uint64_t hash = st->hash;
     st->hash = 0;
@@ -253,7 +254,7 @@ static bool stackVerifier(stack_t *st) {
 }
 
 #ifdef STACK_DEBUG
-void stackDump(stack_t *st) {
+static void stackDump(stack_t *st) {
     if (st == NULL) return;
  
     log("Dump stack made in file %s by function %s in line %d:\n", st->file, st->func, st->line);
@@ -282,7 +283,7 @@ void stackDump(stack_t *st) {
     log("}\n");
 }
 #else
-void stackDump(Stack_t *st) {}
+static void stackDump(Stack_t *st) {}
 #endif
 
 size_t getStackSize(stack_t *st) {
