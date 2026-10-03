@@ -4,6 +4,7 @@
 
 #include "stack.h"
 #include "log.h"
+#include "common.h"
 
 void sort2(size_t *s) {
     assert(s);
@@ -43,7 +44,7 @@ int main() {
     log("Start stack program\n");
 
     stack_t st = {};
-    ErrorStatusStack err = stackCtorN(&st, 3, 11, 12, 13);
+    ErrorStatusStack err = stackCtorN(&st, 3, 11.0, 12.0, 13.0);
     
     if (err == STACK_MEMORY_ERROR) {
         fprintf(stderr, "MEEEEEEEEEMORY ERR ctor\n");
@@ -56,7 +57,7 @@ int main() {
     stackPrint(&st);
     printf("-----------\n\n");
 
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 2; i++) {
         printf(STACK_ELEMENT_FORMATER " ", stackPop(&st));
     }
     printf("\n");
@@ -66,6 +67,7 @@ int main() {
     // }
    
     logPuts("portim");
+    st.data[1] = 1.0;
     // rewrite_string((char*)st.data);
 
     // st.size = st.capacity + 2;
@@ -75,7 +77,8 @@ int main() {
     // st.canary1 = 1;
     logPuts("poportily");
     // stackPush(&st, 1);
-    stackPop(&st);
+    // printf(STACK_ELEMENT_FORMATER "\n\n", stackPop(&st));
+    stackPrint(&st);
     logPuts("proshlo");
 
     for (int i = 0; i < 6; i++) {

@@ -35,7 +35,8 @@ ErrorStatusStack _stackCtor(stack_t *st IF_STACK_DEBUG(, const char *file, const
         assert(st->canary2 == 0);
     )
     IF_STACK_HASH(
-        assert(st->hash == 0);
+        assert(st->stack_hash == 0);
+        assert(st->data_hash  == 0);
     )
  
     log("Init a stack %p\n", st);
@@ -82,7 +83,10 @@ ErrorStatusStack _stackCtor(stack_t *st IF_STACK_DEBUG(, const char *file, const
         st->name = name;
     )
 
-    IF_STACK_HASH(st->hash = getHash(st, sizeof(stack_t));)
+    IF_STACK_HASH(
+        st->data_hash  = getHash(st->data, st->capacity);
+        st->stack_hash = getHash(st, sizeof(stack_t));
+    )
 
     assert(stackVerifier(st));
 
@@ -101,7 +105,8 @@ ErrorStatusStack _stackCtorN(stack_t *st IF_STACK_DEBUG(, const char *file, cons
         assert(st->canary2 == 0);
     )
     IF_STACK_HASH(
-        assert(st->hash == 0);
+        assert(st->stack_hash == 0);
+        assert(st->data_hash  == 0);
     )
 
     log("Init a stack at %p\n", st);
@@ -154,7 +159,10 @@ ErrorStatusStack _stackCtorN(stack_t *st IF_STACK_DEBUG(, const char *file, cons
         st->name = name;
     )
 
-    IF_STACK_HASH(st->hash = getHash(st, sizeof(stack_t));)
+    IF_STACK_HASH(
+        st->data_hash  = getHash(st->data, st->capacity);
+        st->stack_hash = getHash(st, sizeof(stack_t));
+    )
 
     assert(stackVerifier(st));
     
@@ -299,10 +307,17 @@ ErrorStatusStackVerifier isStackFailed(stack_t *st) {
     )
     
     IF_STACK_HASH(
-        uint64_t hash = st->hash;
-        st->hash = 0;
-        if (getHash(st, sizeof(stack_t)) != hash) return VERIFY_STACK_HASH;
-        st->hash = hash;
+        if (getHash(st->data, st->capacity) != st->data_hash) {
+            logError("bad data_hash\n");
+            return VERIFY_STACK_HASH_DATA;
+        }
+        uint64_t hash = st->stack_hash;
+        st->stack_hash = 0;
+        if (getHash(st, sizeof(stack_t)) != hash) {
+            logError("bad stack_hash\n");
+            return VERIFY_STACK_HASH_STACK;
+        }
+        st->stack_hash = hash;
     )
 
     return VERIFY_STACK_OK;
@@ -331,7 +346,7 @@ static void stackDump(stack_t *st) {
     )
 
     IF_STACK_HASH(
-    log("    hash     = %lu\n", st->hash);
+    log("    hash     = %lu\n", st->stack_hash);
     )
 
     if (st->data == NULL) return;
@@ -440,9 +455,10 @@ void _stackPrint(stack_t *st, const char *name) {
 static void recountHash(stack_t *st) {
     assert(st);
 
-    st->hash = 0;
+    st->stack_hash = 0;
+    st->data_hash = getHash(st->data, st->capacity * sizeof(stackElement_t));
     uint64_t hash = getHash(st, sizeof(stack_t));
-    st->hash = hash;
+    st->stack_hash = hash;
 }
 #else
 static void recountHash(stack_t *st) {return;}

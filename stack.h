@@ -50,7 +50,10 @@ typedef struct {
     IF_STACK_CANARY(stackElement_t *buffer;)
     size_t size;
     size_t capacity;
-    IF_STACK_HASH(uint64_t hash;)
+    IF_STACK_HASH(
+        uint64_t data_hash;
+        uint64_t stack_hash;
+    )
     IF_STACK_DEBUG(
         const char *file;
         const char *func;
@@ -76,7 +79,8 @@ typedef enum {
     VERIFY_STACK_CANARY2,
     VERIFY_STACK_CANARY3,
     VERIFY_STACK_CANARY4,
-    VERIFY_STACK_HASH
+    VERIFY_STACK_HASH_DATA,
+    VERIFY_STACK_HASH_STACK
 } ErrorStatusStackVerifier;
 
 ErrorStatusStackVerifier isStackFailed(stack_t *st);

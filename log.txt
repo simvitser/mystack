@@ -1,29 +1,23 @@
-[main.c    ] [43  ] [main                       ] [14:05:25] [ INFO] ->  Start stack program
-[stack.c   ] [107 ] [_stackCtorN                ] [14:05:25] [ INFO] ->  Init a stack at 0x7b2892bf0020
-[stack.c   ] [167 ] [stackPush                  ] [14:05:25] [ INFO] ->  push el: 1.000000 to 0x7b2892bf0020
-[stack.c   ] [370 ] [stackResize                ] [14:05:25] [ INFO] ->  resize a stack 0x7b2892bf0020 to size 6
-[stack.c   ] [167 ] [stackPush                  ] [14:05:25] [ INFO] ->  push el: 2.000000 to 0x7b2892bf0020
-[stack.c   ] [167 ] [stackPush                  ] [14:05:25] [ INFO] ->  push el: 3.000000 to 0x7b2892bf0020
-[stack.c   ] [167 ] [stackPush                  ] [14:05:25] [ INFO] ->  push el: 4.000000 to 0x7b2892bf0020
-[stack.c   ] [370 ] [stackResize                ] [14:05:25] [ INFO] ->  resize a stack 0x7b2892bf0020 to size 12
-[stack.c   ] [167 ] [stackPush                  ] [14:05:25] [ INFO] ->  push el: 5.000000 to 0x7b2892bf0020
-[stack.c   ] [167 ] [stackPush                  ] [14:05:25] [ INFO] ->  push el: 6.000000 to 0x7b2892bf0020
-[stack.c   ] [197 ] [stackPop                   ] [14:05:25] [ INFO] ->  pop el: 6.000000 from stack 0x7b2892bf0020
-[stack.c   ] [197 ] [stackPop                   ] [14:05:25] [ INFO] ->  pop el: 5.000000 from stack 0x7b2892bf0020
-[stack.c   ] [197 ] [stackPop                   ] [14:05:25] [ INFO] ->  pop el: 4.000000 from stack 0x7b2892bf0020
-[stack.c   ] [197 ] [stackPop                   ] [14:05:25] [ INFO] ->  pop el: 3.000000 from stack 0x7b2892bf0020
-[stack.c   ] [197 ] [stackPop                   ] [14:05:25] [ INFO] ->  pop el: 2.000000 from stack 0x7b2892bf0020
-[stack.c   ] [197 ] [stackPop                   ] [14:05:25] [ INFO] ->  pop el: 1.000000 from stack 0x7b2892bf0020
-[stack.c   ] [370 ] [stackResize                ] [14:05:25] [ INFO] ->  resize a stack 0x7b2892bf0020 to size 6
-[log.c     ] [33  ] [logPuts                    ] [14:05:25] [ INFO] ->  portim
-[log.c     ] [33  ] [logPuts                    ] [14:05:25] [ INFO] ->  poportily
-[stack.c   ] [197 ] [stackPop                   ] [14:05:25] [ INFO] ->  pop el: 0.000000 from stack 0x7b2892bf0020
-[log.c     ] [33  ] [logPuts                    ] [14:05:25] [ INFO] ->  proshlo
-[stack.c   ] [218 ] [stackPopLoyal              ] [14:05:25] [ INFO] ->  pop el: 0.000000 from stack 0x7b2892bf0020
-[stack.c   ] [370 ] [stackResize                ] [14:05:25] [ INFO] ->  resize a stack 0x7b2892bf0020 to size 3
-[stack.c   ] [218 ] [stackPopLoyal              ] [14:05:25] [ INFO] ->  pop el: 0.000000 from stack 0x7b2892bf0020
-[stack.c   ] [211 ] [stackPopLoyal              ] [14:05:25] [ INFO] ->  pop loyal 0 from stack 0x7b2892bf0020
-[stack.c   ] [211 ] [stackPopLoyal              ] [14:05:25] [ INFO] ->  pop loyal 0 from stack 0x7b2892bf0020
-[stack.c   ] [211 ] [stackPopLoyal              ] [14:05:25] [ INFO] ->  pop loyal 0 from stack 0x7b2892bf0020
-[stack.c   ] [211 ] [stackPopLoyal              ] [14:05:25] [ INFO] ->  pop loyal 0 from stack 0x7b2892bf0020
-[stack.c   ] [253 ] [stackDtor                  ] [14:05:25] [ INFO] ->  destroy stack 0x7b2892bf0020
+[main.c    ] [44  ] [main                       ] [14:42:44] [ INFO] ->  Start stack program
+[stack.c   ] [112 ] [_stackCtorN                ] [14:42:44] [ INFO] ->  Init a stack at 0x7b63ab6f0020
+[stack.c   ] [175 ] [stackPush                  ] [14:42:44] [ INFO] ->  push el: 1.000000 to 0x7b63ab6f0020
+[stack.c   ] [385 ] [stackResize                ] [14:42:44] [ INFO] ->  resize a stack 0x7b63ab6f0020 to size 6
+[stack.c   ] [311 ] [isStackFailed              ] [14:42:44] [ERROR] ->  bad data_hash
+[stack.c   ] [338 ] [stackDump                  ] [14:42:44] [ INFO] ->  Dump stack made in file main.c by function int main() in line 47:
+[stack.c   ] [339 ] [stackDump                  ] [14:42:44] [ INFO] ->  Stack_t st [0x7b63ab6f0020] {
+[stack.c   ] [340 ] [stackDump                  ] [14:42:44] [ INFO] ->      size     = 3
+[stack.c   ] [341 ] [stackDump                  ] [14:42:44] [ INFO] ->      capacity = 6
+[stack.c   ] [344 ] [stackDump                  ] [14:42:44] [ INFO] ->      canary1  = ded32dedded32ded
+[stack.c   ] [345 ] [stackDump                  ] [14:42:44] [ INFO] ->      canary2  = ba0bab00eda0deda
+[stack.c   ] [349 ] [stackDump                  ] [14:42:44] [ INFO] ->      hash     = 9908121976126491811
+[stack.c   ] [358 ] [stackDump                  ] [14:42:44] [ INFO] ->      canary3  = facededafacededa
+[stack.c   ] [359 ] [stackDump                  ] [14:42:44] [ INFO] ->      canary4  = c0cedded333c0ca1
+[stack.c   ] [361 ] [stackDump                  ] [14:42:44] [ INFO] ->      data[] = {
+[stack.c   ] [363 ] [stackDump                  ] [14:42:44] [ INFO] ->           *[ 0] = 11.000000
+[stack.c   ] [363 ] [stackDump                  ] [14:42:44] [ INFO] ->           *[ 1] = 12.000000
+[stack.c   ] [363 ] [stackDump                  ] [14:42:44] [ INFO] ->           *[ 2] = 13.000000
+[stack.c   ] [366 ] [stackDump                  ] [14:42:44] [ INFO] ->            [ 3] = 0.000000
+[stack.c   ] [366 ] [stackDump                  ] [14:42:44] [ INFO] ->            [ 4] = -0.000002
+[stack.c   ] [366 ] [stackDump                  ] [14:42:44] [ INFO] ->            [ 5] = -0.000002
+[stack.c   ] [368 ] [stackDump                  ] [14:42:44] [ INFO] ->      }
+[stack.c   ] [369 ] [stackDump                  ] [14:42:44] [ INFO] ->  }
