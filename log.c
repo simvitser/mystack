@@ -33,7 +33,7 @@ void logPuts(const char *message) {
     log("%s\n", message);
 }
 
-void log(const char *message, ...) {
+void _log(const char *prefix, const char *file, const char *func, const int line, const char *message, ...) {
     assert(message);
     if (GLOBAL_LOG_FILE == NULL) return;
 
@@ -44,9 +44,9 @@ void log(const char *message, ...) {
     struct tm *tp = localtime(&now);
     
     char time_string[MAX_TIME_SIZE] = {};
-    strftime(time_string, MAX_TIME_SIZE, "%d.%m.%Y %H:%M:%S", tp);
+    strftime(time_string, MAX_TIME_SIZE, "%H:%M:%S", tp);
     
-    fprintf(GLOBAL_LOG_FILE, "[%s] ", time_string);
+    fprintf(GLOBAL_LOG_FILE, "[%-10s] [%-4d] [%-27s] [%s] [%5s] ->  ", file, line, func, time_string, prefix);
     vfprintf(GLOBAL_LOG_FILE, message, ap);
     va_end(ap);
 }

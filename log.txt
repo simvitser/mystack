@@ -1,37 +1,29 @@
-[01.10.2026 17:02:54] Start stack program
-[01.10.2026 17:02:54] Init a stack at 0x7b3eb78f0020
-[01.10.2026 17:02:54] push el: 1.000000 to 0x7b3eb78f0020
-[01.10.2026 17:02:54] resize a stack 0x7b3eb78f0020 to size 6
-[01.10.2026 17:02:54] push el: 2.000000 to 0x7b3eb78f0020
-[01.10.2026 17:02:54] push el: 3.000000 to 0x7b3eb78f0020
-[01.10.2026 17:02:54] push el: 4.000000 to 0x7b3eb78f0020
-[01.10.2026 17:02:54] resize a stack 0x7b3eb78f0020 to size 12
-[01.10.2026 17:02:54] push el: 5.000000 to 0x7b3eb78f0020
-[01.10.2026 17:02:54] push el: 6.000000 to 0x7b3eb78f0020
-[01.10.2026 17:02:54] pop el: 6.000000 from stack 0x7b3eb78f0020
-[01.10.2026 17:02:54] pop el: 5.000000 from stack 0x7b3eb78f0020
-[01.10.2026 17:02:54] pop el: 4.000000 from stack 0x7b3eb78f0020
-[01.10.2026 17:02:54] pop el: 3.000000 from stack 0x7b3eb78f0020
-[01.10.2026 17:02:54] pop el: 2.000000 from stack 0x7b3eb78f0020
-[01.10.2026 17:02:54] pop el: 1.000000 from stack 0x7b3eb78f0020
-[01.10.2026 17:02:54] resize a stack 0x7b3eb78f0020 to size 6
-[01.10.2026 17:02:54] portim
-[01.10.2026 17:02:54] [ERROR] get invalid stack 0x7b3eb78f0020, err_number 7
-[01.10.2026 17:02:54] Dump stack made in file main.c by function int main() in line 33:
-[01.10.2026 17:02:54] Stack_t st [0x7b3eb78f0020] {
-[01.10.2026 17:02:54]     size     = 3
-[01.10.2026 17:02:54]     capacity = 6
-[01.10.2026 17:02:54]     canary1  = ded32ded
-[01.10.2026 17:02:54]     canary2  = babacada
-[01.10.2026 17:02:54]     hash     = 1357130085377587209
-[01.10.2026 17:02:54]     canary3  = 7777deda
-[01.10.2026 17:02:54]     canary4  = c0cedded
-[01.10.2026 17:02:54]     data[] = {
-[01.10.2026 17:02:54]          *[ 0] = 11.000000
-[01.10.2026 17:02:54]          *[ 1] = 12.000000
-[01.10.2026 17:02:54]          *[ 2] = 13.000000
-[01.10.2026 17:02:54]           [ 3] = 1.000000
-[01.10.2026 17:02:54]           [ 4] = 2.000000
-[01.10.2026 17:02:54]           [ 5] = 3.000000
-[01.10.2026 17:02:54]     }
-[01.10.2026 17:02:54] }
+[main.c    ] [43  ] [main                       ] [14:05:25] [ INFO] ->  Start stack program
+[stack.c   ] [107 ] [_stackCtorN                ] [14:05:25] [ INFO] ->  Init a stack at 0x7b2892bf0020
+[stack.c   ] [167 ] [stackPush                  ] [14:05:25] [ INFO] ->  push el: 1.000000 to 0x7b2892bf0020
+[stack.c   ] [370 ] [stackResize                ] [14:05:25] [ INFO] ->  resize a stack 0x7b2892bf0020 to size 6
+[stack.c   ] [167 ] [stackPush                  ] [14:05:25] [ INFO] ->  push el: 2.000000 to 0x7b2892bf0020
+[stack.c   ] [167 ] [stackPush                  ] [14:05:25] [ INFO] ->  push el: 3.000000 to 0x7b2892bf0020
+[stack.c   ] [167 ] [stackPush                  ] [14:05:25] [ INFO] ->  push el: 4.000000 to 0x7b2892bf0020
+[stack.c   ] [370 ] [stackResize                ] [14:05:25] [ INFO] ->  resize a stack 0x7b2892bf0020 to size 12
+[stack.c   ] [167 ] [stackPush                  ] [14:05:25] [ INFO] ->  push el: 5.000000 to 0x7b2892bf0020
+[stack.c   ] [167 ] [stackPush                  ] [14:05:25] [ INFO] ->  push el: 6.000000 to 0x7b2892bf0020
+[stack.c   ] [197 ] [stackPop                   ] [14:05:25] [ INFO] ->  pop el: 6.000000 from stack 0x7b2892bf0020
+[stack.c   ] [197 ] [stackPop                   ] [14:05:25] [ INFO] ->  pop el: 5.000000 from stack 0x7b2892bf0020
+[stack.c   ] [197 ] [stackPop                   ] [14:05:25] [ INFO] ->  pop el: 4.000000 from stack 0x7b2892bf0020
+[stack.c   ] [197 ] [stackPop                   ] [14:05:25] [ INFO] ->  pop el: 3.000000 from stack 0x7b2892bf0020
+[stack.c   ] [197 ] [stackPop                   ] [14:05:25] [ INFO] ->  pop el: 2.000000 from stack 0x7b2892bf0020
+[stack.c   ] [197 ] [stackPop                   ] [14:05:25] [ INFO] ->  pop el: 1.000000 from stack 0x7b2892bf0020
+[stack.c   ] [370 ] [stackResize                ] [14:05:25] [ INFO] ->  resize a stack 0x7b2892bf0020 to size 6
+[log.c     ] [33  ] [logPuts                    ] [14:05:25] [ INFO] ->  portim
+[log.c     ] [33  ] [logPuts                    ] [14:05:25] [ INFO] ->  poportily
+[stack.c   ] [197 ] [stackPop                   ] [14:05:25] [ INFO] ->  pop el: 0.000000 from stack 0x7b2892bf0020
+[log.c     ] [33  ] [logPuts                    ] [14:05:25] [ INFO] ->  proshlo
+[stack.c   ] [218 ] [stackPopLoyal              ] [14:05:25] [ INFO] ->  pop el: 0.000000 from stack 0x7b2892bf0020
+[stack.c   ] [370 ] [stackResize                ] [14:05:25] [ INFO] ->  resize a stack 0x7b2892bf0020 to size 3
+[stack.c   ] [218 ] [stackPopLoyal              ] [14:05:25] [ INFO] ->  pop el: 0.000000 from stack 0x7b2892bf0020
+[stack.c   ] [211 ] [stackPopLoyal              ] [14:05:25] [ INFO] ->  pop loyal 0 from stack 0x7b2892bf0020
+[stack.c   ] [211 ] [stackPopLoyal              ] [14:05:25] [ INFO] ->  pop loyal 0 from stack 0x7b2892bf0020
+[stack.c   ] [211 ] [stackPopLoyal              ] [14:05:25] [ INFO] ->  pop loyal 0 from stack 0x7b2892bf0020
+[stack.c   ] [211 ] [stackPopLoyal              ] [14:05:25] [ INFO] ->  pop loyal 0 from stack 0x7b2892bf0020
+[stack.c   ] [253 ] [stackDtor                  ] [14:05:25] [ INFO] ->  destroy stack 0x7b2892bf0020

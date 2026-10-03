@@ -18,8 +18,8 @@
 #define WHITE     "\033[37m"
 #define STANDART  "\033[0m"
 
-#define STR2(x) #x
-#define STR(x) STR2(x)
+#define STRDEF(x) #x
+#define STR(x) STRDEF(x)
 
 #define MIN(a, b) ((a) > (b) ? (b) : (a))
 

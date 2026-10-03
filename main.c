@@ -5,21 +5,34 @@
 #include "stack.h"
 #include "log.h"
 
-// void sort2(size_t *s) {
-//     assert(s);
-//
-//     if (s[0] < s[1]) {
-//         size_t tmp = s[0];
-//         s[0] = s[1];
-//         s[1] = tmp;
-//     }
-// }
+void sort2(size_t *s) {
+    assert(s);
+
+    if (s[0] < s[1]) {
+        size_t tmp = s[0];
+        s[0] = s[1];
+        s[1] = tmp;
+    }
+}
 
 void rewrite_string_reverse(char *s_end) {
+    assert(s_end);
+
     int max_len = 7;
     while (*s_end != '\n' && max_len) {
         *s_end = 'w';
         s_end--;
+        max_len--;
+    }
+}
+
+void rewrite_string(char *s_end) {
+    assert(s_end);
+
+    int max_len = 55;
+    while (*s_end != '\n' && max_len) {
+        *s_end = 'w';
+        s_end++;
         max_len--;
     }
 }
@@ -30,7 +43,7 @@ int main() {
     log("Start stack program\n");
 
     stack_t st = {};
-    ErrorStatusStack err = stackCtorN(&st, 3, 11.0, 12.0, 13.0);
+    ErrorStatusStack err = stackCtorN(&st, 3, 11, 12, 13);
     
     if (err == STACK_MEMORY_ERROR) {
         fprintf(stderr, "MEEEEEEEEEMORY ERR ctor\n");
@@ -53,13 +66,14 @@ int main() {
     // }
    
     logPuts("portim");
-    rewrite_string_reverse((char*)st.data);
+    // rewrite_string((char*)st.data);
 
     // st.size = st.capacity + 2;
     // stackPrint(&st);
     // sort2(&(st.size));
     // stackPrint(&st);
     // st.canary1 = 1;
+    logPuts("poportily");
     // stackPush(&st, 1);
     stackPop(&st);
     logPuts("proshlo");
@@ -74,7 +88,7 @@ int main() {
     printf("-----------\n\n");
     stackPrint(&st);
 
-    stackDetor(&st);
+    stackDtor(&st);
     logDestroy();
     return 0;
 }

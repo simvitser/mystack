@@ -14,10 +14,10 @@
 
 static const size_t BASE_STACK_SIZE = 2;
 
-static const canary_t CANARY1 = 0xDED32DED;
-static const canary_t CANARY2 = 0xBABACADA;
-static const canary_t CANARY3 = 0xFACEDEDA;
-static const canary_t CANARY4 = 0xC0CEDDED;
+static const canary_t CANARY1 = 0xDED32DEDDED32DED;
+static const canary_t CANARY2 = 0xBA0BAB00EDA0DEDA;
+static const canary_t CANARY3 = 0xFACEDEDAFACEDEDA;
+static const canary_t CANARY4 = 0xC0CEDDED333C0CA1;
 
 static bool stackVerifier(stack_t *st);
 
@@ -30,9 +30,13 @@ ErrorStatusStack _stackCtor(stack_t *st IF_STACK_DEBUG(, const char *file, const
     assert(st->data == NULL);
     assert(st->capacity == 0);
     assert(st->size == 0);
-    assert(st->canary1 == 0);
-    assert(st->canary2 == 0);
-    assert(st->hash == 0);
+    IF_STACK_CANARY(
+        assert(st->canary1 == 0);
+        assert(st->canary2 == 0);
+    )
+    IF_STACK_HASH(
+        assert(st->hash == 0);
+    )
  
     log("Init a stack %p\n", st);
 
@@ -41,6 +45,7 @@ ErrorStatusStack _stackCtor(stack_t *st IF_STACK_DEBUG(, const char *file, const
         return STACK_MEMORY_ERROR;
     }
 
+    #ifdef STACK_CANARY_PROTECTION
     size_t data_size = BASE_STACK_SIZE * sizeof(stackElement_t);
     if (data_size % sizeof(canary_t)) data_size += (sizeof(canary_t) - data_size % sizeof(canary_t));
 
@@ -49,7 +54,7 @@ ErrorStatusStack _stackCtor(stack_t *st IF_STACK_DEBUG(, const char *file, const
         logError("Can't create stack %p: no memory\n", st);
         return STACK_MEMORY_ERROR;
     }
-
+    
     ptr[0] = CANARY3;
     ptr[data_size / sizeof(canary_t) + 1] = CANARY4;
 
@@ -59,6 +64,16 @@ ErrorStatusStack _stackCtor(stack_t *st IF_STACK_DEBUG(, const char *file, const
     st->capacity = BASE_STACK_SIZE;
     st->canary1 = CANARY1;
     st->canary2 = CANARY2;
+    #else
+    st->data = (stackElement_t*)calloc(BASE_STACK_SIZE, sizeof(stackElement_t));
+    
+    if (st->data == NULL) {
+        logError("Can't create stack %p: no memory\n", st);
+        return STACK_MEMORY_ERROR;
+    }
+    
+    st->capacity = BASE_STACK_SIZE;
+    #endif
 
     IF_STACK_DEBUG(
         st->file = file;
@@ -67,9 +82,11 @@ ErrorStatusStack _stackCtor(stack_t *st IF_STACK_DEBUG(, const char *file, const
         st->name = name;
     )
 
-    st->hash = getHash(st, sizeof(stack_t));
+    IF_STACK_HASH(st->hash = getHash(st, sizeof(stack_t));)
 
     assert(stackVerifier(st));
+
+    logOk("succes init stack %p\n");
     
     return STACK_OK;
 }
@@ -79,15 +96,20 @@ ErrorStatusStack _stackCtorN(stack_t *st IF_STACK_DEBUG(, const char *file, cons
     assert(st->data == NULL);
     assert(st->capacity == 0);
     assert(st->size == 0);
-    assert(st->canary1 == 0);
-    assert(st->canary2 == 0);
-    assert(st->hash == 0);
+    IF_STACK_CANARY(
+        assert(st->canary1 == 0);
+        assert(st->canary2 == 0);
+    )
+    IF_STACK_HASH(
+        assert(st->hash == 0);
+    )
 
     log("Init a stack at %p\n", st);
 
     va_list ap = {};
     va_start(ap, n);
 
+    #ifdef STACK_CANARY_PROTECTION
     size_t data_size = n * sizeof(stackElement_t);
     if (data_size % sizeof(canary_t)) data_size += (sizeof(canary_t) - data_size % sizeof(canary_t));
 
@@ -107,9 +129,20 @@ ErrorStatusStack _stackCtorN(stack_t *st IF_STACK_DEBUG(, const char *file, cons
     st->size = n;
     st->canary1 = CANARY1;
     st->canary2 = CANARY2;
+    #else
+    st->data = (stackElement_t*)calloc(n, sizeof(stackElement_t));
+    
+    if (st->data == NULL) {
+        return STACK_MEMORY_ERROR;
+    }
+    
+    st->capacity = n;
+    st->size = n;
+    #endif
 
     for (size_t i = 0; i < n; i++) {
-        st->data[i] = va_arg(ap, stackElement_t);
+        if (sizeof(stackElement_t) != 1) st->data[i] = va_arg(ap, stackElement_t);
+        else st->data[i] = va_arg(ap, int);
     }
 
     va_end(ap);
@@ -121,7 +154,7 @@ ErrorStatusStack _stackCtorN(stack_t *st IF_STACK_DEBUG(, const char *file, cons
         st->name = name;
     )
 
-    st->hash = getHash(st, sizeof(stack_t));
+    IF_STACK_HASH(st->hash = getHash(st, sizeof(stack_t));)
 
     assert(stackVerifier(st));
     
@@ -214,46 +247,76 @@ ErrorStatusStack stackPopTo(stack_t *st, stackElement_t *el) {
     return STACK_OK;
 }
 
-void stackDetor(stack_t *st) {
+void stackDtor(stack_t *st) {
     assert(stackVerifier(st));
 
     log("destroy stack %p\n", st);
 
+    #ifdef STACK_CANARY_PROTECTION
     free(st->buffer);
+    #else
+    free(st->data);
+    #endif
     *st = (stack_t){0};
 }
 
-int stackIsFailedNoPrint(stack_t *st) {
-    if (st == NULL)                     return 1;
-    if (st->size > st->capacity)        return 2;
-    if (st->capacity < BASE_STACK_SIZE) return 3;
-    if (st->data == NULL)               return 4;
-    if (st->canary1 != CANARY1)         return 5;
-    if (st->canary2 != CANARY2)         return 6;
+ErrorStatusStackVerifier isStackFailed(stack_t *st) {
+    if (st == NULL) {
+        logError("pointer st is NULL\n");
+        return VERIFY_STACK_NULLPTR;
+    }
+    if (st->size > st->capacity) {
+        logError("stack size > stack capacity\n");
+        return VERIFY_STACK_SIZE_MORE_CAPACITY;
+    } 
+    if (st->data == NULL) {
+        logError("stack data is NULL\n");
+        return VERIFY_STACK_DATA_NULLPTR;
+    }
+    IF_STACK_CANARY(
+        if (st->canary1 != CANARY1) {
+            logError("canary1 was changed\n");
+            return VERIFY_STACK_CANARY1;
+        }
+        if (st->canary2 != CANARY2) {
+            logError("canary2 was changed\n");
+            return VERIFY_STACK_CANARY2;
+        }
 
-    size_t data_size = st->capacity * sizeof(stackElement_t);
-    if (data_size % sizeof(canary_t)) data_size += (sizeof(canary_t) - data_size % sizeof(canary_t));
+        size_t data_size = st->capacity * sizeof(stackElement_t);
+        if (data_size % sizeof(canary_t)) {
+            data_size += (sizeof(canary_t) - data_size % sizeof(canary_t));
+        }
+        
+        if (((canary_t*)st->buffer)[0] != CANARY3) {
+            logError("canary3 was changed\n");
+            return VERIFY_STACK_CANARY3;
+        }
+        if (((canary_t*)st->buffer)[data_size / sizeof(canary_t) + 1] != CANARY4) {
+            logError("canary4 was changed\n");
+            return VERIFY_STACK_CANARY4;
+        }
+    )
     
-    if (((canary_t*)st->buffer)[0] != CANARY3)                                return 7;
-    if (((canary_t*)st->buffer)[data_size / sizeof(canary_t) + 1] != CANARY4) return 8;
-    
-    uint64_t hash = st->hash;
-    st->hash = 0;
-    if (getHash(st, sizeof(stack_t)) != hash) return 9;
-    st->hash = hash;
-    return 0;
+    IF_STACK_HASH(
+        uint64_t hash = st->hash;
+        st->hash = 0;
+        if (getHash(st, sizeof(stack_t)) != hash) return VERIFY_STACK_HASH;
+        st->hash = hash;
+    )
+
+    return VERIFY_STACK_OK;
 }
 
+#ifdef STACK_DEBUG
 static bool stackVerifier(stack_t *st) {
-    int failed = stackIsFailedNoPrint(st);
+    int failed = isStackFailed(st);
     if (failed) {
-        logError("get invalid stack %p, err_number %d\n", st, failed);
         stackDump(st);
     }
     return !failed;
 }
 
-#ifdef STACK_DEBUG
 static void stackDump(stack_t *st) {
     if (st == NULL) return;
  
@@ -261,17 +324,25 @@ static void stackDump(stack_t *st) {
     log("Stack_t %s [%p] {\n", st->name + 1, st); // + 1 - убрать & в начале
     log("    size     = %zu\n",  st->size);
     log("    capacity = %zu\n",  st->capacity);
-    log("    canary1  = %x\n", st->canary1);
-    log("    canary2  = %x\n", st->canary2);
+    
+    IF_STACK_CANARY(
+    log("    canary1  = %lx\n", st->canary1);
+    log("    canary2  = %lx\n", st->canary2);
+    )
+
+    IF_STACK_HASH(
     log("    hash     = %lu\n", st->hash);
+    )
 
     if (st->data == NULL) return;
     
-    size_t data_size = st->capacity * sizeof(stackElement_t);
-    if (data_size % sizeof(canary_t)) data_size += (sizeof(canary_t) - data_size % sizeof(canary_t));
+    IF_STACK_CANARY(
+        size_t data_size = st->capacity * sizeof(stackElement_t);
+        if (data_size % sizeof(canary_t)) data_size += (sizeof(canary_t) - data_size % sizeof(canary_t));
 
-    log("    canary3  = %x\n", ((canary_t*)st->buffer)[0]);
-    log("    canary4  = %x\n", ((canary_t*)st->buffer)[data_size / sizeof(canary_t) + 1]); 
+        log("    canary3  = %lx\n", ((canary_t*)st->buffer)[0]);
+        log("    canary4  = %lx\n", ((canary_t*)st->buffer)[data_size / sizeof(canary_t) + 1]);
+    )
     log("    data[] = {\n");
     for (size_t i = 0; i < MIN(st->size, st->capacity); i++) {
         log("         *[%2zu] = " STACK_ELEMENT_FORMATER "\n", i, st->data[i]);
@@ -283,6 +354,7 @@ static void stackDump(stack_t *st) {
     log("}\n");
 }
 #else
+static bool stackVerifier(stack_t *st) {return true;}
 static void stackDump(stack_t *st) {}
 #endif
 
@@ -303,12 +375,7 @@ ErrorStatusStack stackResize(stack_t *st, size_t new_size) {
         return STACK_RESIZE_ERROR;
     }
 
-    // stackElement_t *ptr = (stackElement_t*)realloc(st->data, new_size * sizeof(stackElement_t));
-    // if (ptr == NULL) {
-    //     logError("Can't resize stack %p: no memory\n", st);
-    //     return STACK_MEMORY_ERROR;
-    // }
-
+    #ifdef STACK_CANARY_PROTECTION
     size_t data_size_now = st->capacity * sizeof(stackElement_t);
     if (data_size_now % sizeof(canary_t)) data_size_now += (sizeof(canary_t) - data_size_now % sizeof(canary_t));
 
@@ -329,15 +396,17 @@ ErrorStatusStack stackResize(stack_t *st, size_t new_size) {
 
     st->data =   (stackElement_t*)(ptr + 1);
     st->buffer = (stackElement_t*)(ptr);
+    #else
+    stackElement_t *ptr = (stackElement_t*)realloc(st->data, new_size * sizeof(stackElement_t));
+    if (ptr == NULL) {
+        return STACK_MEMORY_ERROR;
+    }
     
-
-
-
-
-
+    st->capacity = new_size;
+    st->data = ptr;
+    #endif
 
     st->capacity = new_size;
-    // st->data = ptr;
 
     recountHash(st);
 
@@ -367,6 +436,7 @@ void _stackPrint(stack_t *st, const char *name) {
     _stackfPrint(stdout, st, name);
 }
 
+#ifdef STACK_HASH_PROTECTION
 static void recountHash(stack_t *st) {
     assert(st);
 
@@ -374,3 +444,7 @@ static void recountHash(stack_t *st) {
     uint64_t hash = getHash(st, sizeof(stack_t));
     st->hash = hash;
 }
+#else
+static void recountHash(stack_t *st) {return;}
+#endif
+
