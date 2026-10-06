@@ -86,4 +86,4 @@ int main() {
 ```
 
 ## Стек - это страшно, очень страшно, я не знаю что это такое, если бы я знал что это такое, но я не знаю что это такое
-### (it was a joke, I understand this code)
+### (it is a joke, I understand this)
